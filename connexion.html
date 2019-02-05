@@ -1,0 +1,28 @@
+<?php
+	session_start();
+	include('functions.php');
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css"/>
+		<title>Login - </title>	
+		<meta charset="utf-8"/>	
+	</head>
+	<body>
+		<form id="myForm" action="login.php" method="POST">
+			<fieldset>
+				<legend>Connexion</legend>
+				<label for="pseudo">Username or email :</label></br>
+				<input id="input" type="text" name="pseudo" placeholder="Ex : WNR" required/></br></br>
+				<label for="mdp">Password :</label></br>
+				<input id="input" type="password" name="mdp" placeholder="******" required/></br></br>
+				<label>Genre : </label></br>
+				<input type="radio" name="genre" value="male" checked/>Male 
+				<input type="radio" name="genre" value="female"/>Female</br></br>
+				<input type="checkbox" name="keep" id="check"/>Keep me sign in</br></br>
+				<button type="submit" id="subm">login</button><button type="reset" id="submR">Reset</button>
+			</fieldset>
+		</form>
+	</body>
+</html>
