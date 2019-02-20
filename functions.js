@@ -53,7 +53,7 @@ function chat(id, other, other_img, max){
 	article_form = document.querySelector("#send_form");
 	//alert(article_head);
 	var head = '<img src="Profil/'+other_img+'" width="50" id="user_img_article"/> <font id="user_article">'+other+'</font></br><font id="last_seen"></font>',
-		form = '<form action="javascript:send('+id+');" id="formSend"><input type="text" id="msg" placeholder="Type a message"/><button type="submit" id="submit"><i class="fa fa-send-o" id="subGlyph" style="font-size:32px;"></i></button>';
+		form = '<div id="fAttachBox"><input type="file" accept="image/*" id="img-to-upload" onchange="sendFile(\'img\');"/><button onclick="selectFile(\'img\');"><i class="fa fa-file-photo-o" id="sFile" style="font-size:32px;"></i></button><input type="file" accept="audio/*" id="audio-to-upload" onchange="sendFile(\'audio\');"/><button onclick="selectFile(\'audio\');"><i class="fa fa-file-audio-o" id="sFile" style="font-size:32px;"></i></button><input type="file" accept="video/*|.m4v" id="video-to-upload" onchange="sendFile(\'video\');"/><button onclick="selectFile(\'video\');"><i class="fa fa-file-movie-o" id="sFile" style="font-size:32px;"></i></button><input type="file" accept=".pdf, .txt, .html, .htm, .xls, .xlsx, .doc, .docx, .zip, .7z, .gz, .rar, .apk, .java, .jar, .class, .dmg, .exe, .pkg" id="doc-to-upload" onchange="sendFile(\'doc\');"/><button onclick="selectFile(\'doc\');"><i class="fa fa-file-text-o" id="sFile" style="font-size:32px;"></i></button></div><form action="javascript:send('+id+');" id="formSend"><input type="text" id="msg" placeholder="Type a message"/><button type="submit" id="submit"><i class="fa fa-send-o" id="subGlyph" style="font-size:32px;"></i></button> <button id="file_attach" onclick="attachFile();"><i class="fa fa-paperclip" id="aFile" style="font-size:32px;"></i></button>';
 	article_head.innerHTML = head;
 	article_form.innerHTML = form;
 
@@ -393,5 +393,150 @@ function setWidth(){
 	}
 }
 setWidth();
+var show_attach_box = true;
+function attachFile(){
+	var box = $("#fAttachBox"), btnA = $("#file_attach");
+	if(show_attach_box){
+		//obj.style.background = 'red';
+		box.slideDown();
+		show_attach_box = false;	
+	}else{
+		//obj.style.background = 'transparent';
+		box.slideUp();
+		show_attach_box = true;	
+	} 
 
+}
+
+function selectFile(type){
+	$('#'+type+'-to-upload').trigger('click');
+}
+
+function sendFile(type){
+	var actReq, msgInput = document.querySelector("#msg");
+	var file = document.querySelector('#'+type+'-to-upload').files, form = new FormData(), fLength = file.length - 1, viewI;
+	actReq = getErequete(actReq);
+	attachFile();
+	if(actReq != null){
+		var iValue = msgInput.value;//, btn = document.querySelector("#subGlyph");
+		var dat=new Date();
+		var myDate = StringiFy(dat);
+		if(file.length > 0){
+			form.append('op', 2);
+			form.append('msg', iValue);
+			form.append('id', idD);
+			form.append('type', type);
+			form.append('nb_file', fLength);
+			for(var i=0; i<=fLength; i++){
+				form.append('file'+i, file[i]);
+				document.getElementById("UlmsgList").innerHTML += '<li id="li" ondblclick="option('+(maxID+1)+');"><div id="mineG"><p style=""><div id="prev"></div><span id="msgA">'+iValue+'</span><p style="text-align:left;color:gray;" id="msgd"> '+myDate+'</p><div id="load" class="load'+maxID+'" style="display:none;"><img id="editableimage2" height="20px" src="load.gif" border="0"/></div></div><span id="bulleMsg"></span></li>';
+				viewI=document.querySelectorAll("#prev");
+				maxID++;
+			}
+			for(var j=0; j<=fLength; j++){
+				switch(type){
+					case 'img':
+						createThumbnail(file[j], viewI[viewI.length-(fLength+1)+j]);
+						break;
+					case 'audio':
+						audioPrev(file[j], viewI[viewI.length-(fLength+1)+j]);
+						break;
+					case 'video':
+						videoPrev(file[j], viewI[viewI.length-(fLength+1)+j]);
+						break;
+					case 'doc':
+						docPrev(file[j], viewI[viewI.length-(fLength+1)+j]);
+						break;
+				}
+			}
+			/*var li = '<li id="li" ondblclick="option('+(maxID+1)+');"><div id="mineG"><p style=""><span id="msgA">'+iValue+'</span><p style="text-align:left;color:gray;" id="msgd"> '+myDate+'</p><div id="load" class="load'+maxID+'" style="display:none;"><img id="editableimage2" height="20px" src="load.gif" border="0"/></div></div><span id="bulleMsg"></span></li>';
+			var cod=document.getElementById("UlmsgList");
+			cod.innerHTML+=li;*/
+			try{
+				actReq.open('POST', 'send.php', true);
+				actReq.onreadystatechange = function (){
+					if(actReq.readyState == 4 && actReq.status == 200){
+						var div = actReq.responseText;
+						//alert(div);
+					}
+				};
+				actReq.send(form);
+				msgInput.value = "";
+				setTimeout(function(){
+					var scrolM=document.querySelector("#MesArea");
+					scrolM.scrollTop=scrolM.scrollHeight;
+					setWidth();
+				}, 200);
+			}catch(e){}
+		}
+	}
+}
+
+// fonctions de prévisualisation de fichiers
+function createThumbnail(file, a) {
+	var reader = new FileReader();
+	reader.onload = function() {
+		var imgElement = document.createElement("img"), alink = document.createElement("a");
+		alink.href = "javascript:;";
+		alink.onclick = "imageReader(this, event);";
+		imgElement.style.maxWidth = "200px";
+		imgElement.style.maxHeight = "200px";
+		imgElement.src = this.result;
+		alink.appendChild(imgElement);
+		a.appendChild(alink);
+		a.innerHTML+="</br>";
+	};
+	reader.readAsDataURL(file);
+}
+function audioPrev(file, a) {
+	var reader = new FileReader();
+	reader.onload = function() {
+		var audElement = document.createElement("audio");
+		audElement.controls=true;
+		audElement.src = this.result;
+		a.appendChild(audElement);
+	};
+	reader.readAsDataURL(file);
+}
+function videoPrev(file, a) {
+	var reader = new FileReader();
+	reader.onload = function() {
+		var vidElement = document.createElement("video");
+		vidElement.controls=true;
+		vidElement.style.maxWidth = "300px";
+		vidElement.style.maxHeight = "250px";
+		vidElement.src = this.result;
+		a.appendChild(vidElement);
+	};
+	reader.readAsDataURL(file);
+}
+function docPrev(file, div) {
+	var url = URL.createObjectURL(file);
+	var aDoc = "", vDoc = "";
+	var docName=file.name.split(".");
+	switch (docName[docName.length - 1].toLowerCase()) {
+		case "pdf":
+			aDoc = '<a onclick="docUpload(\''+url+'\', this, event);" href="#?w=0" rel="lecteurPDF" class="pop" id="aForFile"><i id="pdf" class="fa fa-file-pdf-o" style="font-size:64px; font-color:red; float:left;"></i><p id="aForFileP">'+docName[0]+'</p></br></a>';
+			//vDoc = '<a onclick="docUpload('+url+');" href="#?w=0" rel="lecteurPDF" class="pop" id="aForFileNone"><i id="pdf" class="DGfi-file-pdf" style="font-size:64px; font-color:red; float:left;"></i><p id="aForFileP">'+docName[0]+'</p></br></a>';
+			break;
+		case "doc":
+		case "docx":
+			break;
+		case "xls":
+		case "xlsx":
+			break;
+		default:
+			break;
+	}
+	div.innerHTML += aDoc; 
+	/*if(countA % 2 == 0){
+		div.innerHTML += aDoc;
+		var selectedA = document.querySelectorAll("#aForFile");
+		selectedA[selectedA.length-1].addEventListener("click", function (){
+			docUpload(url);
+		}, false);
+	}else{
+		div.innerHTML += vDoc;	
+	}*/
+}
 

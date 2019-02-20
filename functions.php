@@ -74,25 +74,26 @@
 		return $res;
 	}
 	function getStrDateAside($a){
+		$dates = "";
 		$dat=getDate(strtotime($a));
 		if(date("Y")==$dat['year']){  
 		  if(date("m")==$dat['mon']){
 			if(date("d")==$dat['mday']){
-				$dates=$dat['hours'].':'.$dat['minutes'];
+				$dates.=$dat['hours'].':'.$dat['minutes'];
 			}
 			else if(date("d")==($dat['mday']+1)){
-				$dates='Hier';
+				$dates.='Hier';
 			}else{
 				$month = getMonth($dat['month']);
-				$dates=$dat['mday'].' '.$month;
+				$dates.=$dat['mday'].' '.$month;
 			}
 		  }else{
 		  	$month = getMonth($dat['month']);
-			$dates=$dat['mday'].' '.$month;
+			$dates .= $dat['mday'].' '.$month;
 		  }
 
 		}else{
-			$dates=$dat['mday'].' '.$dat['mon'].'/'.$dat['year'];
+			$dates=$dat['mday'].' '.getMonth($dat['month']).' '.$dat['year'];
 		}
 		return $dates;
 	}

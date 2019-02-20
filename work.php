@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="style.css"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="bootstrap-3.3.7/font-awesome-4.1.0/css/font-awesome.css"/>
+		<!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>-->
 	</head>
 	<body>
 		<?php

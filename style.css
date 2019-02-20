@@ -340,7 +340,7 @@ legend
 	#msg
 	{
 		border: 1px solid rgba(200,200,200,1);
-		width: 550px;
+		width: 540px;
 		height: 40px;
 		border-radius: 40px;
 		font-size: 0.7em;
@@ -352,6 +352,15 @@ legend
 		position: absolute;
 		top:10px;
 		left:590px;
+		background: transparent;
+		border: none;
+		margin: 0;
+	}
+	#aFile
+	{
+		position: absolute;
+		top:10px;
+		left:650px;
 		background: transparent;
 		border: none;
 		margin: 0;
@@ -451,6 +460,58 @@ legend
 		word-wrap: break-word;
 		text-align:left;
 	}
-}
+	#fAttachBox
+	{
+		width: 100px;
+		height: 250px;
+		display: none;
+		position: absolute;
+		top:-250px;
+		left:605px;
+		background: white;
 
+	}
+	#fAttachBox button
+	{
+		display: block;
+		background: transparent;
+		border-radius: 50%;
+		padding: 10px;
+		margin-left: 25px;
+		border: 1px solid rgba(150,150,150,0);
+		background: white;
+	}
+	#fAttachBox button:hover
+	{
+		border: 1px solid rgba(150,150,150,1);
+		background: rgba(230,230,230,1);
+	}
+	#fAttachBox button:hover i
+	{
+		color: green;
+	}
+	#file_attach
+	{
+		border-radius: 50%;
+		padding: 10px;
+	}
+	#file_attach:hover
+	{
+		background: rgba(240,240,240,1);
+	}
+	#img-to-upload, #audio-to-upload, #video-to-upload, #doc-to-upload
+	{
+		display: none;
+	}
+}
+#image
+{
+	max-width: 200px;
+	max-height: 200px;
+}
+#video
+{
+	max-width: 300px;
+	max-height: 250px;
+}
 

@@ -40,18 +40,67 @@
 				$deb = (int) $_POST['deb'];
 				$end = (int) $_POST['end'];
 
-				$allMsg=$db->query('SELECT * FROM messages WHERE address='.$id.' AND id >='.$deb.' AND id <= '.($deb + 20).' ORDER BY dates LIMIT 0,20');
+				$allMsg=$db->query('SELECT * FROM messages WHERE address='.$id.' AND id >='.$deb.' ORDER BY dates LIMIT 0,20');
 				while($msg = $allMsg->fetch()){
-					if($msg['username'] == $pseudo){
-						print '<li id="li" ondblclick="option('.$msg['id'].');"><div id="mineG"><p style="">
-							<span id="msgA">'.$msg['msg'].'</span><p style="text-align:left;color:gray;" id="msgd"> '.getStrDate($msg['dates']).'</p>
-							</div></div><span id="bulleMsg"></span></li>';
-					}else{
-						print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
-						<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
-						$dates=getStrDate($msg['dates']);
-						echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
-						</div></li>';
+					switch ($msg['type_']) {
+						case 'text':
+							if($msg['username'] == $pseudo){
+								print '<li id="li" ondblclick="option('.$msg['id'].');"><div id="mineG"><p style="">
+									<span id="msgA">'.$msg['msg'].'</span><p style="text-align:left;color:gray;" id="msgd"> '.getStrDate($msg['dates']).'</p>
+									</div></div><span id="bulleMsg"></span></li>';
+							}else{
+								print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
+								<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
+								$dates=getStrDate($msg['dates']);
+								echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
+								</div></li>';
+							}
+							break;
+						case 'img':
+							if($msg['username'] == $pseudo){
+								print '<li id="li" ondblclick="option('.$msg['id'].');"><div id="mineG"><p style="">
+									<div id="prevE"><a href="javascript:;" onclick="imageReader(this, event);"><img src="Upload/Images/'.$msg['file_'].'" id="image"/></a></div>
+									<span id="msgA">'.$msg['msg'].'</span><p style="text-align:left;color:gray;" id="msgd"> '.getStrDate($msg['dates']).'</p>
+									</div></div><span id="bulleMsg"></span></li>';
+							}else{
+								print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
+								<div id="prevE"><a href="javascript:;" onclick="imageReader(this, event);"><img src="Upload/Images/'.$msg['file_'].'" id="image"/></a></div>
+								<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
+								$dates=getStrDate($msg['dates']);
+								echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
+								</div></li>';
+							}
+							break;
+						case 'audio':
+							if($msg['username'] == $pseudo){
+								print '<li id="li" ondblclick="option('.$msg['id'].');"><div id="mineG"><p style="">
+									<div id="prevE"><audio src="Upload/Audios/'.$msg['file_'].'" id="audio" controls></audio></div>
+									<span id="msgA">'.$msg['msg'].'</span><p style="text-align:left;color:gray;" id="msgd"> '.getStrDate($msg['dates']).'</p>
+									</div></div><span id="bulleMsg"></span></li>';
+							}else{
+								print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
+								<div id="prevE"><audio src="Upload/Audios/'.$msg['file_'].'" id="audio" controls></audio></div>
+								<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
+								$dates=getStrDate($msg['dates']);
+								echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
+								</div></li>';
+							}
+							break;
+						case 'video':
+							if($msg['username'] == $pseudo){
+								print '<li id="li" ondblclick="option('.$msg['id'].');"><div id="mineG"><p style="">
+									<div id="prevE"><video src="Upload/Videos/'.$msg['file_'].'" id="video" controls></video></div>
+									<span id="msgA">'.$msg['msg'].'</span><p style="text-align:left;color:gray;" id="msgd"> '.getStrDate($msg['dates']).'</p>
+									</div></div><span id="bulleMsg"></span></li>';
+							}else{
+								print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
+								<div id="prevE"><video src="Upload/Videos/'.$msg['file_'].'" id="video" controls></video></div>
+								<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
+								$dates=getStrDate($msg['dates']);
+								echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
+								</div></li>';
+							}
+							break;
 					}
 				}
 				print '';
