@@ -13,6 +13,7 @@
 	</head>
 	<body>
 		<?php
+			echo '<script>var pseudo = "'.$_SESSION['username'].'";</script>';
 			$i=0;
 			$j=0;
 			$req=$db->query('SELECT * FROM membres LIMIT 0,100');
@@ -27,7 +28,7 @@
 					<button id="menu_ico" onclick="menu();"><i class="fa fa-ellipsis-v" style="font-size:32px;"></i></button>
 					<div id="menu_user">
 						<ul>
-							<li><a href="javascript:;" onclick="profil();">Profil</a></li>
+							<li><a href="javascript:;" onclick="profil(this, '#popup_profil');">Profil</a></li>
 							<li><a href="javascript:;" onclick="setting();">Setting</a></li>
 					</div>
 				</div>
@@ -63,8 +64,12 @@
 				</div>
 			</article>
 		</section>
+		<div id="popup_imgR" class="popupDC">
+			<img src="#" id="imgToRead" style="max-width:100%; min-width:100%;"/>
+		</div>
+		<div id="popup_profil" class="popupDC"></div>
+		<script type="text/javascript" src="popupDC/popupDC.js"></script>
 		<script type="text/javascript" src="functions.js"></script>
 		<script type="text/javascript" src="jQuery.js"></script>
-		<script src="popup.js"></script>
 	</body>
 </html>

@@ -3,6 +3,7 @@
 */
 var idD = 0, maxID = 0, tabs, list_chats_ul, list_chats, msg_area, oldASide = "", endIdCount2nd = 0, article_head, article_form,
 	__NO_CHAT = '<p id="no_chat">No chat</p>',
+	__NOT = '<p id="no_chat">Nothing to show</p>',
 	__NO_MSG = '<p id="no_chat">No message</p>';
 
 function getErequete(request){
@@ -478,7 +479,7 @@ function createThumbnail(file, a) {
 	reader.onload = function() {
 		var imgElement = document.createElement("img"), alink = document.createElement("a");
 		alink.href = "javascript:;";
-		alink.onclick = "imageReader(this, event);";
+		alink.onclick = "imageReader(this, event, \'"+this.result+"\');";
 		imgElement.style.maxWidth = "200px";
 		imgElement.style.maxHeight = "200px";
 		imgElement.src = this.result;
@@ -538,5 +539,50 @@ function docPrev(file, div) {
 	}else{
 		div.innerHTML += vDoc;	
 	}*/
+}
+
+function imageReader(obj, evt, url){
+	$('#imgToRead').get(0).src = url;
+	$('#popup_imgR').css({'background' : 'transparent', 'border' : 'none'});
+	var popup = new PopupDC("#popup_imgR");
+	//alert(obj.firstChild.offsetWidth);
+	var ey_ = (/*evt.pageY*/obj.offsetTop - getParent(obj, $('#MesArea').get(0)).scrollTop), ex_ = obj.offsetLeft;//evt.pageX;
+	if(window.innerWidth > 600)
+		popup.initDC(200, 800, 600, ex_, ey_, obj.firstChild.offsetWidth, obj.firstChild.offsetHeight);
+	else popup.initDC(200, window.innerWidth-10, 600, ex_, ey_, obj.firstChild.offsetWidth, obj.firstChild.offsetHeight);
+}
+
+function getProfil(box_id){
+	var actReq;
+	actReq = getErequete(actReq);
+	//alert(pseudo);
+	if(actReq != null){
+		var body = "op=3&pseudo="+pseudo;
+		try{
+			actReq.open('POST', 'get.php', true);
+			actReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			actReq.onreadystatechange = function (){
+				if(actReq.readyState == 4 && actReq.status == 200){
+					var div = actReq.responseText;
+					var box = document.querySelector(box_id);
+					if(div != ""){
+						$("#spinner").hide();			
+						box.innerHTML = div;
+					}else{
+						box.innerHTML = __NOT;
+					}
+				}
+			};
+			actReq.send(body);
+		}catch(e){}
+	}
+}
+
+function profil(obj, id_){
+	var elmt = $(id_).get(0);
+	var popup = new PopupDC(id_);
+	if(elmt.innerHTML == "") getProfil(id_);
+	popup.initialization(400, 800, 600);
+	popup.Show();	
 }
 

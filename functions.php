@@ -61,7 +61,7 @@
 			case 'March':
 				$res = 'Mar.';
 				break;
-			case 'Febuary':
+			case 'February':
 				$res = 'Feb.';
 				break;
 			case 'January':

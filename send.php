@@ -40,11 +40,43 @@
 						/*print '<li id="li" ondblclick="option('.$msg['id'].');"><div id="mineG"><p style="">
 							<span id="msgA">'.$msg['msg'].'</span><p style="text-align:left;color:gray;" id="msgd"> '.getStrDate($msg['dates']).'</p>
 							<img id="editableimage2" height="20px" src="load.gif" border="0"/></div></div><span id="bulleMsg"></span></li>';*/
-						print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
-						<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
-						$dates=getStrDate($msg['dates']);
-						echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
-						</div></li>';
+						switch ($msg['type_']) {
+							case 'text':
+								print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
+								<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
+								$dates=getStrDate($msg['dates']);
+								echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
+								</div></li>';
+								break;
+							case 'img':
+								print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
+								<div id="prevE"><a href="javascript:;" onclick="imageReader(this, event);"><img src="Upload/Images/'.$msg['file_'].'" id="image"/></a></div>
+								<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
+								$dates=getStrDate($msg['dates']);
+								echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
+								</div></li>';
+								break;
+							case 'audio':
+								print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
+								<div id="prevE"><audio src="Upload/Audios/'.$msg['file_'].'" id="audio" controls></audio></div>
+								<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
+								$dates=getStrDate($msg['dates']);
+								echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
+								</div></li>';
+								break;
+							case 'video':
+								print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
+								<div id="prevE"><video src="Upload/Videos/'.$msg['file_'].'" id="video" controls></video></div>
+								<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
+								$dates=getStrDate($msg['dates']);
+								echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
+								</div></li>';
+								break;
+							
+							default:
+								# code...
+								break;
+						}
 					}
 				}
 				break;

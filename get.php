@@ -59,12 +59,12 @@
 						case 'img':
 							if($msg['username'] == $pseudo){
 								print '<li id="li" ondblclick="option('.$msg['id'].');"><div id="mineG"><p style="">
-									<div id="prevE"><a href="javascript:;" onclick="imageReader(this, event);"><img src="Upload/Images/'.$msg['file_'].'" id="image"/></a></div>
+									<div id="prevE"><a href="javascript:;" onclick="imageReader(this, event, \''.'Upload/Images/'.$msg['file_'].'\');"><img src="Upload/Images/'.$msg['file_'].'" id="image"/></a></div>
 									<span id="msgA">'.$msg['msg'].'</span><p style="text-align:left;color:gray;" id="msgd"> '.getStrDate($msg['dates']).'</p>
 									</div></div><span id="bulleMsg"></span></li>';
 							}else{
 								print   '<li id="li" ondblclick="pointeur('.$msg['id'].');"><span id="bulleMsg2"></span><div id="minenG"><p style="" class="spG">
-								<div id="prevE"><a href="javascript:;" onclick="imageReader(this, event);"><img src="Upload/Images/'.$msg['file_'].'" id="image"/></a></div>
+								<div id="prevE"><a href="javascript:;" onclick="imageReader(this, event, \''.'Upload/Images/'.$msg['file_'].'\');"><img src="Upload/Images/'.$msg['file_'].'" id="image"/></a></div>
 								<span class="msgRc">   '.nl2br($msg['msg']). ' </span>';
 								$dates=getStrDate($msg['dates']);
 								echo '<p style="text-align:right;color:gray;" id="msgd"> '.$dates. '   </p>
@@ -137,6 +137,18 @@
 					print $maxID.';'.$value.';'.$select['img'];
 				}
 				print '';
+				break;
+			case 3:
+				$pseudo = htmlspecialchars($_POST['pseudo']);
+				$req = $db->prepare('SELECT * FROM membres WHERE username =?');
+				$req->execute(array($pseudo));
+				$req = $req->fetch();
+				print '<div id="profil">
+						<p align="center" id="profil_head">
+							<a href="#"><img src="Profil/'.$req['img'].'" id="imgP"/></a></br>
+							<font id="userName">'.$pseudo.'</font>
+						</p>
+				</div>';
 				break;
 			default:
 				# code...

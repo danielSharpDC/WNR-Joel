@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css"/>
+		<title> popupDC </title>	
+		<meta charset="utf-8"/>	
+		<style>
+			#test{
+				position: fixed;
+				display: none;
+				width: 0;
+				height: 0;
+				padding: 10px;
+				z-index: 999;
+				background: white;
+				font-family: calibri, arial;
+				font-size: 100%;
+				-webkit-transform:scale(0.8);
+				-moz-transform:scale(0.8);
+				transform:scale(0.8);
+				border: 1px solid black;
+				overflow: hidden;
+				transition:0.1s;
+				transition-property:all;
+			}
+			#fadeC { /*--Masque opaque noir de fond--*/
+				display: none; /*--masqué par défaut--*/
+				background: #000;
+				position: fixed; left: 0; top: 0;
+				width: 100%; height: 100%;
+				opacity: .60;
+				z-index: 9;
+			}
+			#btn_popup
+			{
+				position: relative;
+				top:0px;
+				left:0%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="test">Ce site a été conçu pour vous offrir 
+	le meilleur de l’enseignement dans différentes filières scientifiques mais aussi littéraires.</br>
+En effet , dans le coin département du site, vous trouverez les différentes filières que vous aimerez étudier,  
+	ceux-ci se répartissant en département de mathématiques,  de physique-chimie,  de français ;  d’informatique,  
+	d’anglais et même de philosophie afin de vous affranchir en tant que bon intellectuel.
+	<button id="close_popupDC">Close</button></div>
+	<button  id="btn_popup">popup</button>
+
+	<script type="text/javascript" src="popupDC.js"></script>
+	<script type="text/javascript" src="jQuery.js"></script>
+	<script type="text/javascript">
+		//popupComplex("#test", "#btn_popup", 0.5, 600, 400);
+		var popup = new PopupDC("#test");
+		popup.initialization(200, 600, 400);
+		$('#btn_popup').click(function(){
+			popup.Show();
+		});
+	</script>
+	</body>
+</html>
